@@ -1,0 +1,146 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1036\deflangfe1036\deftab708{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
+{\colortbl ;\red51\green153\blue102;\red51\green102\blue255;}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\nowidctlpar\lang2060\b\f0\fs52 TThGrid\par
+\b0\fs20\par
+\par
+\b Unit\'e9\b0\~: Thgrids.pas\par
+\b Auteur\b0\~: ThWilliam\par
+\b Anc\'eatre\b0\~: TthBasicGrid, lui-m\'eame d\'e9riv\'e9 de TcustomGrid. \par
+\par
+\par
+\cf1\b\fs28 Description\par
+\cf0\b0\fs20\par
+TThGrid est une grille orient\'e9e donn\'e9es avec des propri\'e9t\'e9s d\rquote affichage, un contr\'f4le de l\rquote\'e9dition de texte\'85\par
+Le composant en lui-m\'eame ne m\'e9morise pas les donn\'e9es, celles-ci doivent \'eatre fournies par un \lquote objet container\rquote , comme un array 2D ou un composant personnel. TrecordsList convient particuli\'e8rement bien.\par
+\par
+\par
+\cf1\b\fs28 Propri\'e9t\'e9s des lignes\par
+\cf0\b0\fs20\par
+Les lignes fig\'e9es sont appel\'e9es \lquote header\rquote . Les autres sont les lignes de donn\'e9es.\par
+\cf2\b HeaderRowCount\cf0\b0\~: nombre de lignes du header.\par
+\cf2\b HeaderRowHeight\cf0\b0\~: hauteur des lignes du header.\par
+\cf2\b DataRowCount\cf0\b0\~: nombre de lignes de donn\'e9es. Il faut au moins une ligne. Le nombre total de lignes du Grid est donc \'e9gal \'e0 HeaderRowCount + DataRowCount.\par
+\cf2\b DataRow\cf0\b0\~: en lecture, cette propri\'e9t\'e9 renvoie la ligne de la cellule s\'e9lectionn\'e9e\~; en \'e9criture, elle permet de s\'e9lectionner une ligne. Attention : \ul la premi\'e8re ligne de donn\'e9es a l'indice z\'e9ro\ulnone . Alors que si, par exemple vous avez deux lignes fixes, la propri\'e9t\'e9 Row renvoie 2. \par
+\cf2\b MinRowHeight\cf0\b0\~: hauteur minimale des lignes de donn\'e9es.\par
+\cf2\b RowHeights\par
+Row \cf0\b0 (rendue publique, mais ne devrait pas \'eatre utilis\'e9e)\cf2\b\par
+\cf0\b0\par
+\par
+\cf1\b\fs28 Propri\'e9t\'e9s des colonnes\par
+\cf0\b0\fs20\par
+\cf2\b ColIdx\~\cf0\b0 : identificateur (integer) de chaque colonne. Ceci est facultatif, mais tr\'e8s utile si vous permettez \'e0 l\rquote utilisateur de d\'e9placer les colonnes. Avec par exemple un array 2D, initialisez ColIdx selon les indices du tableau (0, 1, 2\'85). Ainsi, m\'eame en cas de d\'e9placement de colonne, ColIdx vous permettra de retrouver l\rquote indice correct du taleau. Sinon, il vous faudrait permuter les valeurs contenues dans le tableau.\par
+\cf2\b FixedColumns\cf0\b0  : nombre de colonnes fixes. Remarque : dans les lignes de donn\'e9es, les cellules des colonnes fixes font \'e9galement partie des donn\'e9es. \par
+\cf2\b ColumnsCount\cf0\b0  : nombre total de colonnes. Il faut au moins une colonne de plus que le nombre de colonnes fixes.\par
+\cf2\b Columns\cf0\b0  : propri\'e9t\'e9 donnant acc\'e8s aux param\'e8tres de chaque colonne. La premi\'e8re colonne a l'indice z\'e9ro.\par
+\pard\nowidctlpar\li567\cf2\b Color\cf0\b0  : couleur de la colonne avec d\'e9grad\'e9 possible entre Color1 et Color2.\par
+\cf2\b Font\cf0\b0  : fonte utilis\'e9e pour le texte de la colonne.\par
+\cf2\b HorzAlignment\cf0\b0  : alignement horizontal du texte.\par
+\cf2\b VertAlignment\cf0\b0  : alignement vertical du texte.\par
+\cf2\b Offset\cf0\b0  : ajustement de la position du texte (d\'e9calage left, top, right et bottom).\par
+\cf2\b TextEllipsis\cf0\b0  : indique ce qu'il faut faire si tout le texte ne peut \'eatre affich\'e9.\par
+\pard\nowidctlpar\li1134 teEndEllipsis : ajout de 3 points de suspension\par
+tePathEllipsis : si le texte est un chemin de fichier, le path est tronqu\'e9 pour afficher l'essentiel.\par
+\pard\nowidctlpar\li567\cf2\b TextMultiLines\cf0\b0  : true = le texte peut s'afficher sur plusieurs lignes. Si les options comprennent "mgoAutoRowHeight", la hauteur de ligne sera automatiquement adapt\'e9e.\par
+\cf2\b RightVertLine\cf0\b0  : false = pas d'affichage de la ligne verticale de fin de cellule. Ceci ne vaut que si les options comprennent "mgoVertLine".\par
+\cf2\b CanSelect\cf0\b0  : false = la colonne ne ne peut pas \'eatre s\'e9lectionn\'e9e. Dans ce cas, la couleur de colonne devient la couleur utilis\'e9e pour les cellules fixes.\par
+\cf2\b Header\cf0\b0  : lignes fixes d'ent\'eate.\par
+\pard\nowidctlpar\li1134\cf2\b Title\cf0\b0  : titre de la colonne. \par
+\cf2\b Font\cf0\b0  : fonte utilis\'e9e pour le titre.\par
+\cf2\b HorzAlignment\cf0\b0  : alignement horizontal du titre.\par
+\cf2\b Offset\cf0\b0  : ajustement de la position du titre.\par
+\pard\nowidctlpar\li567\cf2\b EditingParams\cf0\b0  : propri\'e9t\'e9s pour l'\'e9dition\par
+\pard\nowidctlpar\li1134\cf2\b CanEdit\cf0\b0  : la colonne peut \'eatre \'e9dit\'e9e.\par
+\cf2\b CellType\cf0\b0  : type de donn\'e9es avec v\'e9rification lors de l'\'e9dition par l'utilisateur. Pour le type boolean, les valeurs admises sont '1' pour true, '0' ou '' pour false. \par
+\cf2\b MaxLength\cf0\b0  : nombre de caract\'e8res maximum. Si MaxLength = 0, il n'y a pas de limite.\par
+\cf2\b CharCase\cf0\b0  : transforme les caract\'e8res frapp\'e9s par l'utilisateur en majuscules ou minuscules.\par
+\pard\nowidctlpar\cf2\b ColWidths\par
+Col\par
+\cf0\b0\par
+\par
+\cf1\b\fs28 Autres propri\'e9t\'e9s et fonctions\par
+\cf0\b0\fs20\par
+\cf2\b Color_Fixed\cf0\b0  : couleur des lignes et colonnes fixes.\par
+\cf2\b Color_Selected\cf0\b0  : couleur utilis\'e9e pour les cellules s\'e9lectionn\'e9es.\par
+\cf2\b Color3D_Fixed\cf0\b0  : dessin de lignes donnant un aspect de relief aux cellules fixes. Initialisez \'e0 'clNone' pour ne pas les dessiner.\par
+\cf2\b FontColor_Selected\cf0\b0  : couleur utilis\'e9e pour le texte des cellules s\'e9lectionn\'e9es.\par
+\cf2\b GridOptions\cf0\b0  : deux options sp\'e9ciales :\par
+\pard\nowidctlpar\li567 mgoAutoRowHeight : calcul automatique de la hauteur de ligne en fonction de la fonte ou d'un texte multi-lignes.\par
+mgoDrawFocusRect : dessin du rectangle de focalisation. Si les options comprennent "mgoRowSelect", le rectangle n'est pas dessin\'e9.\par
+\pard\nowidctlpar\cf2\lang2057\b Selection\par
+Canvas\par
+function DrawBitmap(Bitmap: TBitmap; CellRect: TRect; BmpRect: TRect; Transparent: boolean; CalcRect: boolean): TRect;\cf0\b0\par
+\lang1036 Cette fonction facilite le dessin de bitmap dans la grille.\par
+CellRect = les coordonn\'e9es de la cellule dans le Canvas du Grid.\par
+BmpRect : Left : position gauche du bitmap en valeur absolue. Si Left = -1, le bitmap sera centr\'e9 horizontalement dans la cellule. \par
+Top : position haute du bitmap en valeur absolue. Si Top = -1, le bitmap sera centr\'e9 verticalement dans la cellule.\par
+Right : largeur maximale de l'affichage du bitmap.\par
+Bottom : hauteur maximale.\par
+CalcRect : true = la fonction n'est utilis\'e9e que pour calculer l'emplacement du bitmap sans le dessiner. Ceci peut \'eatre utilis\'e9 dans l'\'e9v\'e9nement OnCellClick pour d\'e9terminer sur quel bitmap l'utilisateur a cliqu\'e9.\par
+La valeur de retour est un TRect donnant les coordonn\'e9es d'affichage du bitmap (en valeur absolue).\par
+\par
+\par
+\cf1\b\fs28 Remarques\par
+\cf0\b0\fs20\par
+En mode \'e9dition de cellule, la touche Escape permet d\rquote abandonner les modifications et de retrouver ainsi la valeur de d\'e9part.\par
+\par
+\par
+\cf1\lang2057\b\fs28 Ev\'e9nements\cf0\b0\fs20\par
+\cf2\b\par
+OnNeedData  (ACol, ADataRow: integer; var AValue: string)\par
+\cf0\lang1036\b0 Ev\'e9nement appel\'e9 lorsque le grid a besoin des valeurs \'e0 afficher ou \'e0 \'e9diter.\par
+ADataRow est l'indice de la ligne de donn\'e9es.\par
+Exemple avec un array 2D :\par
+\pard\nowidctlpar\li708 AValue := MyArray[ACol, ADataRow];\par
+\pard\nowidctlpar ou mieux , si vous avez assign\'e9 la propri\'e9t\'e9 ColIdx des colonnes en fonction du tableau :\par
+\pard\nowidctlpar\li708\lang2057 AValue := MyArray[Grid.Columns[ACol].ColIdx, ADataRow];\par
+\pard\nowidctlpar\lang1036 Ainsi, votre tableau reste valable m\'eame si l'utilisateur a modifi\'e9 l'emplacement des colonnes.\par
+\cf2\b\par
+\lang2057 OnChangeCellText (ACol, ADataRow: integer; CellValue: string)\par
+\cf0\lang1036\b0 Ev\'e9nement appel\'e9 appel\'e9 \'e0 la sortie d\rquote\'e9dition d\rquote une cellule.\par
+Obligatoire pour mettre \'e0 jour le composant \lquote container de donn\'e9es\rquote\par
+\pard\nowidctlpar\li708 MyArray[Acol, AdataRow]\~:= CellValue\~;\cf2\b\par
+\pard\nowidctlpar\par
+\lang2057 OnDrawDataCell (ACol, ADataRow: integer; ARect: TRect; AState: TGridDrawState; var AValue: string)\par
+\cf0\lang1036\b0 Cet \'e9v\'e9nement est appel\'e9 juste avant l'affichage du texte de la cellule.\par
+Il n'est pas obligatoire si vous \'eates satisfait du dessin par d\'e9faut.\par
+AValue = le texte \'e0 afficher.\par
+Vous pouvez modifier AValue.\par
+Pour ne pas afficher le texte, assignez une cha\'eene vide. Par exemple, pour afficher une image d'un TImageList dont le texte de cellule est l'indice de l'image.\par
+\par
+\cf2\lang2057\b OnDrawHeaderCell (ACol, ARow: integer; ARect: TRect; var AValue: string)\par
+\cf0\lang1036\b0 Idem, mais pour les lignes du Header.\par
+\cf2\b\par
+\lang2057 OnCalcRowHeight (ADataRow: integer; var ARowHeight: integer)\par
+\cf0\lang1036\b0 Permet d'adapter la hauteur de ligne. Cet \'e9v\'e9nement est appel\'e9 lorsque le composant calcule les hauteurs de lignes. Il n'est donc appel\'e9 que si les options comprennent mgoAutoRowHeight.\par
+\par
+\cf2\lang2057\b OnCellClick (Shift: TShiftState; ACol, ADataRow: integer; ARect: TRect; X, Y: integer)\par
+\cf0\lang1036\b0 Cet \'e9v\'e9nement n'est appel\'e9 que lors d'un clic sur une cellule de lignes de donn\'e9es, et quand cette cellule n'est pas en mode \'e9dtion.\par
+ACol = la colonne de la cellule.\par
+ADataRow = la ligne de donn\'e9es de la cellule.\par
+ARect = coordonn\'e9es de la cellule\par
+X, Y = coordonn\'e9es du point de click.\par
+Exemple : avec ARect = (100, 50, 200, 75) et X = 102 et Y = 53 --> clic sur le pixel (2, 3) de la cellule.\par
+Si vous autorisez l\rquote\'e9dition dans la grille, interdisez l\rquote\'e9dition de la colonne (CanEdit) pour un fonctionnement optimal.\par
+\par
+\cf2\lang2057\b OnBeforeSelectCell (CurCol, CurDataRow, NewCol, NewDataRow: integer; var CanSelect: boolean)\par
+\cf0\lang1036\b0 Ev\'e9nement appel\'e9 juste avant le changement de s\'e9lection d\rquote une cellule.\par
+CanSelect = false\~: interdit le changement.\par
+\par
+\cf2\lang2057\b OnAfterSelectCell (OldCol, OldDataRow, CurCol, CurDataRow: integer)\par
+\cf0\lang1036\b0 Ev\'e9nement appel\'e9 juste apr\'e8s le d\'e9placement de la s\'e9lection d\rquote une cellule.\par
+Peut \'eatre utilis\'e9,par exemple, pour synchroniser avec d\rquote autres objets (Tedit, Tmemo\'85) ou pour v\'e9rifier l\rquote\'e9dition.\par
+La comparaison entre OldCol et CurCol permet de voir si on chang\'e9 de colonne.\par
+La comparaison entre OldDataRow et CurDataRow permet de voir si on a chang\'e9 de ligne.\par
+\par
+\cf2\lang2057\b OnCanAcceptKey (ACol, ADataRow: integer; Key: Char; var Accept: boolean)\par
+\cf0\lang1036\b0 Ev\'e9nement appel\'e9 \'e0 chaque frappe de caract\'e8re en mode \'e9dition de cellule.\par
+Ceci vous permet de refuser certains caract\'e8res pour telle cellule.\par
+\par
+\cf2\lang2057\b OnColumnMoved (FromIndex, ToIndex: integer)\par
+\cf0\lang1036\b0 Ev\'e9nement appel\'e9 apr\'e8s un d\'e9placement de colonne par l\rquote utilisateur, si les options comprennent \lquote mgoColMoving\rquote .\par
+\par
+\cf2\lang2057\b OnDataRowMoved (FromIndex, ToIndex: integer)\par
+\cf0\lang1036\b0 Ev\'e9nement appel\'e9 apr\'e8s un d\'e9placement de ligne par l\rquote utilisateur, si les options comprennent \lquote mgoRowMoving\rquote .\par
+\par
+}
+ 

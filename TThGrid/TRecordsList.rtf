@@ -1,0 +1,112 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1036\deflangfe1036{\fonttbl{\f0\fswiss\fprq2\fcharset0 Microsoft Sans Serif;}}
+{\colortbl ;\red0\green128\blue0;\red0\green0\blue255;}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\nowidctlpar\b\f0\fs40 TRecordsList\par
+\b0\fs20\par
+\cf1\ul\b\fs24 Pr\'e9sentation\cf0\fs20\par
+\ulnone\b0 TRecordsList est une classe d\'e9riv\'e9e de TCustomRecList, elle-m\'eame d\'e9riv\'e9e de TList.\par
+Chaque Item de la liste pointe sur une cha\'eene de caract\'e8res (string).\par
+Par analogie avec les bases de donn\'e9es, chaque ligne de la liste est un "enregistrement" (record).\par
+Chaque cha\'eene est divis\'e9e en une ou plusieurs sous-cha\'eenes , appel\'e9es "champs" (field).\par
+Le caract\'e8re s\'e9parateur des champs est #1.\par
+En m\'e9moire vive, un enregistrement se pr\'e9sente sous la forme :\par
+[champ1]#1[champ2]#1[champ3]#1\par
+Lors de la sauvegarde sur fichier, un caract\'e8re de fin d'enregistrement est ajout\'e9 (#2).\par
+Le fichier ressemble \'e0 ceci :\par
+[champ1]#1[champ2]#1[champ3]#1#2[champ1]#1[champ2]#1#2...\par
+Comme vous le remarquez dans cet exemple, chaque enregistrement peut avoir un nombre diff\'e9rent de champs.\par
+Un champ peut comporter des retours-chariot (sLineBreak). Ceci permet, p.ex, de stocker les lignes d'un TMemo dans un seul champ (<> TStringList).\par
+Les caract\'e8res interdits dans un champ sont : #0, #1, #2.\par
+Vous ne devez jamais manier vous-m\'eames les #1 et #2 : le composant s'en occupe.\par
+Le premier record de la liste a l'indice 0.\par
+Le premier champ d'un record a l'indice 0.\par
+La liste peut \'eatre tri\'e9e sur un ou plusieurs champs. Le tri est maintenu lors des op\'e9rations d'ajout ou de modification.\par
+\par
+\cf1\ul\b\fs24 Tri de la liste\cf0\ulnone\b0\fs20\par
+Il suffit d'indiquer les indices de champs et \'e9ventuellement de param\'e9trer les options de tri.\par
+\pard\nowidctlpar\li567 MaListe:= TRecordsList.Create;\par
+MaListe.SetSortKey([0,1]); \cf2 // tri sur champ 0 + champ 1\cf0\par
+MaListe.SortOptions:= [loNocaseSensitive, loNoAccentSensitive]; \cf2 // SortOptions est par d\'e9fault [loNoCaseSensitive]\par
+\cf0 MaListe.SortOrder:= soDescending;\cf2  // tri par ordre d\'e9croissant : SortOrder est par d\'e9faut [soAscending]\cf0\par
+\pard\nowidctlpar La procedure Sort utilise la cl\'e9 de tri mentionn\'e9e.\par
+\par
+\cf1\ul\b\fs24 Ajout dans la liste\cf0\ulnone\b0\fs20\par
+\pard\nowidctlpar\li567 MaListe.Add([Edit1.Text, Edit2.Text, Memo1.Text]; \cf2 // ajout d'un record avec 3 champs\par
+\cf0 MaListe.Insert([Edit1.Text, Edit2.Text, Memo1.Text], 10); \cf2 // insertion \'e0 l'index de ligne 10\cf0\par
+\pard\nowidctlpar Remarques : sur une liste tri\'e9e, Insert se comporte comme Add.\par
+\par
+\cf1\ul\b\fs24 Modification d'un enregistrement\cf0\ulnone\b0\fs20\par
+2 fonctions : Edit et EditField.\par
+\pard\nowidctlpar\li567 MaListe.Edit(([Edit1.Text, Edit2.Text, Memo1.Text], 10);\cf2  // remplace tout le contenu du record d'indice 10\cf0\par
+\pard\nowidctlpar\li568 MaListe.EditField(5, 10, 'Bonjour'); \cf2 // remplace dans le record 10  le contenu du champ 5.\cf0\par
+\pard\nowidctlpar EditField permet une modification d'un champ plus facilement que Edit. Le champ indiqu\'e9 peut \'eatre plus grand que l'indice du dernier champ actuel dans l'enregistrement. Dans ce cas, il y a cr\'e9ation des champs manquants initialis\'e9s \'e0 ''.\par
+\par
+\cf1\ul\b\fs24 Suppression d' enregistrements\cf0\ulnone\b0\fs20\par
+\pard\nowidctlpar\li567 MaListe.Delete(3); \cf2 // supprime le record d'indice 3\par
+\cf0 MaListe.Clear;\cf2  // supprime tout\cf0\par
+\pard\nowidctlpar\par
+\cf1\ul\b\fs24 R\'e9cup\'e9rer la valeur d'un champ\cf0\ulnone\b0\fs20\par
+Exemple : assigner \'e0 un TMemo la valeur du champ indice 2 du record indice 5\par
+\pard\nowidctlpar\li567 Memo1.Text:= MaListe.FieldValue[2, 5];\par
+\pard\nowidctlpar FieldValue est la propri\'e9t\'e9 par d\'e9faut. On peut donc aussi \'e9crire :\par
+\pard\nowidctlpar\li567 Memo1.Text:= MaListe[2,5]; \par
+\pard\nowidctlpar Remarque : aucune exception n'est d\'e9clench\'e9e si l'enregistrement ne contient pas de champ indice 2. La valeur de retour de FieldValue sera alors = ''.\par
+\par
+\cf1\ul\b\fs24 Recherche dans la liste par la fonction Locate\cf0\ulnone\b0\fs20\par
+\pard\nowidctlpar\li567\lang2057 function Locate(const AValues: array of string; const AFields: array of integer; var ARecord: integer; \par
+                              Options: TRLLocateOptions; Start: integer = 0): boolean;\par
+\pard\nowidctlpar\lang1036 Les options peuvent \'eatre : loPartialKey, loNoCaseSensitive, loNoAccentSensitive.\par
+Pour une recherche sur cl\'e9 exacte : mettre Options \'e0 [].\par
+Start : indice du record de d\'e9but de recherche (par d\'e9faut = 0)\par
+Si la recherche est concluante, Locate renvoie true et ARecord contient l'indice du record trouv\'e9.\par
+Sinon, Locate renvoie false et ARecord = -1.\par
+exemple : recherche de "El\'e8ve" dans le champ 0 sans tenir compte de la casse ni des accents\par
+\pard\nowidctlpar\li567\lang2057 if MaListe.Locate(['El\'e8ve'], [0], Rec, [loNoCaseSensitive, loNoAccentSensitive]) then ...\par
+\pard\nowidctlpar\lang1036 exemple : trouver tous les "El\'e8ve..." dans la liste :\par
+\pard\nowidctlpar\li567\lang2057 Rec:= -1;\par
+while MaListe.Locate(['El\'e8ve'], [0], Rec,  [loPartialKey, loNoCaseSensitive, loNoAccentSensitive, Rec + 1) do\par
+    ListBox1.Items.Add(MaListe.FieldValue[0,Rec];\par
+\pard\nowidctlpar  \par
+\cf1\lang1036\ul\b\fs24 Recherche dans la liste par la fonction FindKey\cf0\ulnone\b0\fs20\par
+FindKey ne peut \'eatre utilis\'e9 que sur une liste tri\'e9e.\par
+\pard\nowidctlpar\li567\lang2057 function FindKey(const A: array of string; var ARecord: Integer; Options: TRLLocateOptions): Boolean;\par
+\pard\nowidctlpar\lang1036 Indiquez dans A les valeurs \'e0 rechercher dans l'ordre des champs de tri.\par
+Cependant, une recherche est possible sur une cl\'e9 partielle (recherche d'une valeur dans champ 0, alors que la liste est tri\'e9e sur champs 0 et 1.\par
+Mais il est impossible de faire une recherche uniquement sur le champ 1. \par
+Options : voir Locate.\par
+Si la recherche est concluante, FindKey renvoie true et ARecord contient l'indice du record trouv\'e9.\par
+Sinon, FindKey renvoie false et ARecord = -1.\par
+\pard\nowidctlpar\li567   \lang2057 if MaListe.FindKey([Edit1.Text], Rec, []) then ...\par
+\pard\nowidctlpar\lang1036\par
+\cf1\ul\b\fs24 Tri personnalisable\par
+\cf0\ulnone\b0\fs20 Par d\'e9faut, TRecordsList trie de fa\'e7on alphanum\'e9rique en utilisant une fonction interne (CompareValues).\par
+Si, par exemple, votre champ d'indice 0 ne contient que des valeurs num\'e9riques enti\'e8res et que vous voulez trier de fa\'e7on num\'e9rique, il faut employer l'\'e9v\'e9nement OnCompareValues qui doit \'eatre impl\'e9ment\'e9 de la fa\'e7on suivante :\par
+\par
+\pard\nowidctlpar\li567\lang2057 MaListe.OnCompareValues:= MyCompareValues;\par
+\pard\nowidctlpar\par
+\pard\nowidctlpar\li567 function TForm1.MyCompareValues(AValue1, AValue2: string; AField: integer; AOptions: TRLLocateOptions; var ADefault: boolean): integer;\par
+begin\par
+   Result:= 0;\par
+   if AField = 1 then\par
+      try\par
+         Result:= StrToInt(AValue1) - StrToInt(AValue2);\par
+         ADefault:= false; \par
+      except\par
+      end;\par
+end;\par
+\pard\nowidctlpar\par
+\lang1036 ADefault:= false : indique au composant de ne plus utiliser sa propre fonction CompareValues. Comme ADefault est initialis\'e9 \'e0 true, tous les champs autres que le champ d'indice 0 seront trait\'e9s par la fonction interne.\par
+\par
+\cf1\ul\b\fs24 Tri personnel\cf0\ulnone\b0\fs20\par
+La procedure CustomSort permet de trier la liste de fa\'e7on enti\'e8rement personnelle. Le param\'e8tre est un pointeur sur une fonction.\par
+Mais dans ce cas, le tri n'est pas permanent: pas de mise \'e0 jour lors d'ajout ou modification.\par
+L'\'e9v\'e9nement OnCompareValues n'est pas utilisable, ni la fonction FindKey.\par
+\par
+\pard\nowidctlpar\li567\lang2057 function TForm1.MySortList(Index1, index2: integer): Integer;\par
+begin\par
+  \cf2  //...\par
+\cf0 end;\par
+\par
+MaListe.CustomSort(MySortList);\par
+\par
+}
+ 

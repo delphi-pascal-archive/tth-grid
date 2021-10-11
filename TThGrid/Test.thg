@@ -1,0 +1,5 @@
+Bonjour à vous01/01/08Avant tout...
+Jouez avec le resize des colonnes et des lignes.
+Utilisez les options hauteur de ligne auto ou resize manuel.0BMP1Colonne "B"Dans la colonne B :
+tapez 1 pour true, 0 pour false.1Colonne "Lien"Si le texte de la colonne 'Liens' est un nom de fichier existant (avec path complet), il sera remplacé par une icône.
+La colonne étant bloquée en édition, passez par le Memo pour la modifier.Cliquez ensuite sur l'icône pour ouvrir le fichier (Shell Execute)BMP2Colonne "Images"14/04/08Si le texte de la colonne 'Images' contient le nom de bitmap en ressources, ce sont les bitmaps correspondant qui s'afficheront. Dans cette démo, vous avez le choix entre 'Bmp1' et/ou  'Bmp2' et/ou 'Bmp3'.1TThGridVous trouverez dans le fichier TThGrid.rtf (icône ci-après) une explication sur les propriétés, fonctions et événements du composant.TThGrid.rtfBMP1 BMP2TRecordsListTRecordsList sert de "container" pour les données.TRecordsList.rtf
